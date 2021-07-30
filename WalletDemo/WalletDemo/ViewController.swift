@@ -9,27 +9,31 @@ import UIKit
 import PassKit
 
 struct CardInfo {
-    let accountNumber: String = "4761120010000492"//"4514234420053999"
-    let nameOnCard: String = "Digital Issuance"
-    let cvv2: String = "533"//"123"
-    let month: String = "11"//"01"
-    let year: String = "2022"//"2021"
+    var accountNumber: String = "4761120010000492"
+    var nameOnCard: String = "Digital Issuance"
+    var cvv2: String = "533"
+    var month: String = "11"
+    var year: String = "2022"
 }
 
 class ViewController: UIViewController {
     var passController: PKAddPaymentPassViewController?
     var primaryAccountIdentifier: String?
-    let currentCard: CardInfo = CardInfo()
+    var currentCard: CardInfo = CardInfo()
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var numberTextField: UITextField!
-    @IBOutlet weak var descTextField: UITextField!
+    @IBOutlet weak var cvv2TextField: UITextField!
+    @IBOutlet weak var monthTextField: UITextField!
+    @IBOutlet weak var yearTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameTextField.text = "Tom"
-        numberTextField.text = currentCard.accountNumber.last4Characters
-        descTextField.text = "Credit Card (\(currentCard.accountNumber.last4Characters))"
+        nameTextField.text = currentCard.nameOnCard
+        numberTextField.text = currentCard.accountNumber
+        cvv2TextField.text = currentCard.cvv2
+        monthTextField.text = currentCard.month
+        yearTextField.text = currentCard.year
         
         //TODO: bankname ???
         let result = PassKitCardDetector.checkSupportApplePay(cardSuffix: currentCard.accountNumber.last4Characters, bankName: "EastWestBank")
@@ -48,20 +52,31 @@ class ViewController: UIViewController {
     }
     
     @objc func addTapped() {
+        // update current card
+        updateCurrentCardInfo()
+        
+        
         guard let config = PKAddPaymentPassRequestConfiguration(encryptionScheme: .ECC_V2) else { return }
-        config.cardholderName  = nameTextField.text
-        config.primaryAccountSuffix = numberTextField.text
-        config.localizedDescription = descTextField.text
+        config.cardholderName  = currentCard.nameOnCard
+        config.primaryAccountSuffix = currentCard.accountNumber.last4Characters
+        config.localizedDescription = "Credit Card (\(currentCard.accountNumber.last4Characters))"
         config.paymentNetwork = .visa
         //optional
         config.primaryAccountIdentifier = self.primaryAccountIdentifier
         config.cardDetails = [PKLabeledValue(label: "title01", value: "value01")]
-        
-        let lib = PKPassLibrary()
-        lib.openPaymentSetup()
+
         
         guard let passController = PKAddPaymentPassViewController(requestConfiguration: config, delegate: self) else { return }
         present(passController, animated: true, completion: nil)
+    }
+    
+    // update card info
+    func updateCurrentCardInfo() {
+        currentCard.accountNumber = numberTextField.text?.replacingOccurrences(of: " ", with: "") ?? ""
+        currentCard.nameOnCard = nameTextField.text ?? ""
+        currentCard.cvv2 = cvv2TextField.text ?? ""
+        currentCard.month = monthTextField.text ?? ""
+        currentCard.year = yearTextField.text ?? ""
     }
 }
 
