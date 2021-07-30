@@ -57,6 +57,9 @@ class ViewController: UIViewController {
         config.primaryAccountIdentifier = self.primaryAccountIdentifier
         config.cardDetails = [PKLabeledValue(label: "title01", value: "value01")]
         
+        let lib = PKPassLibrary()
+        lib.openPaymentSetup()
+        
         guard let passController = PKAddPaymentPassViewController(requestConfiguration: config, delegate: self) else { return }
         present(passController, animated: true, completion: nil)
     }
@@ -67,11 +70,11 @@ extension ViewController: PKAddPaymentPassViewControllerDelegate {
     
     func addPaymentPassViewController(_ controller: PKAddPaymentPassViewController, generateRequestWithCertificateChain certificates: [Data], nonce: Data, nonceSignature: Data, completionHandler handler: @escaping (PKAddPaymentPassRequest) -> Void) {
         var str: String = ""
-        certificates.forEach({ str = str.appending("Cent: \( String(data: $0, encoding: .utf8) ?? "")\n")})
+        certificates.forEach({ str = str.appending("Cent: \( $0.base64EncodedString())\n")})
         
-        print("Delegate：\(str)\n\nNonce:\(String(data: nonce, encoding: .utf8) ?? "")\n\nNonceSignature:\(String(data: nonceSignature, encoding: .utf8) ?? "")", to: &Log.log)
+        print("Delegate：\(str)\n\nNonce:\(nonce.base64EncodedString())\n\nNonceSignature:\(nonceSignature.base64EncodedString())", to: &Log.log)
         
-        popup(on: controller, "\(str)\n\nNonce:\(String(data: nonce, encoding: .utf8) ?? "")\n\nNonceSignature:\(String(data: nonceSignature, encoding: .utf8) ?? "")") { _ in
+        popup(on: controller, "certificates：\(certificates)\n\nNonce:\(nonce)\n\nNonceSignature:\(nonceSignature)") { _ in
             
             print("开始请求", to: &Log.log)
             // get active info

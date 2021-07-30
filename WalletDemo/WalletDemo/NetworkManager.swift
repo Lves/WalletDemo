@@ -29,9 +29,9 @@ struct NetworkManager {
             "cvv2": card.cvv2,
             "month": card.month,
             "year": card.year,
-            "deviceCert": String(data: certificate, encoding: .utf8) ?? "",
-            "nonceSignature": String(data: nonceSignature, encoding: .utf8) ?? "",
-            "nonce":  String(data: nonce, encoding: .utf8) ?? ""]
+            "deviceCert": certificate.base64EncodedString(),
+            "nonceSignature": nonceSignature.base64EncodedString(),
+            "nonce":  nonce.base64EncodedString()]
         print("requset:\(params)\n", to: &Log.log)
         
         let request = AF.request(serverUrl, method: .post, parameters: params)
