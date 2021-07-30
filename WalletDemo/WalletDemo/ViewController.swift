@@ -79,7 +79,7 @@ extension ViewController: PKAddPaymentPassViewControllerDelegate {
                 let requst = PKAddPaymentPassRequest()
                 if let info = result {
                     print("进来了：\(info)", to: &Log.log)
-                    requst.activationData = info.activationData?.data(using: .utf8)
+                    requst.activationData = Data(base64Encoded: info.activationData ?? "") //info.activationData?.data(using: .utf8)
                     requst.encryptedPassData = Data(base64Encoded: info.encryptedPassData ?? "")
                     requst.ephemeralPublicKey = Data(base64Encoded: info.ephemeralPublicKey ?? "")
                 }
