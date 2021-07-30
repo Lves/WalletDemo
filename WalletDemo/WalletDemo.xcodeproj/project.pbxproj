@@ -368,7 +368,7 @@
 				CODE_SIGN_ENTITLEMENTS = WalletDemo/WalletDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = G3FF6XA5VG;
 				INFOPLIST_FILE = WalletDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -393,7 +393,7 @@
 				CODE_SIGN_ENTITLEMENTS = WalletDemo/WalletDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = G3FF6XA5VG;
 				INFOPLIST_FILE = WalletDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
